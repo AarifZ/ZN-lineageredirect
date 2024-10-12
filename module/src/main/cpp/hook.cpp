@@ -8,9 +8,9 @@
 #include "zygisk_next_api.h"
 #include "socket_utils.h"
 
-#define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, "hostsredirect", __VA_ARGS__)
-#define LOGI(...) __android_log_print(ANDROID_LOG_INFO, "hostsredirect", __VA_ARGS__)
-#define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, "hostsredirect", __VA_ARGS__)
+#define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, "lineageredirect", __VA_ARGS__)
+#define LOGI(...) __android_log_print(ANDROID_LOG_INFO, "lineageredirect", __VA_ARGS__)
+#define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, "lineageredirect", __VA_ARGS__)
 
 static ZygiskNextAPI api_table;
 void* handle;
@@ -21,7 +21,7 @@ static int (*old_openat)(int fd, const char* pathname, int flag, int mode) = nul
 static int my_openat(int fd, const char* pathname, int flag, int mode) {
     // https://android.googlesource.com/platform/system/netd/+/55864199479074e8fb3d285220280ccda270fe7d
     // https://github.com/LineageOS/android_system_netd/commit/f92bf2804098512142cc8d7934ed9d5031b0532c
-    if (strcmp(pathname, "/system/etc/hosts") != 0) {
+    if (strcmp(pathname, "/system/addon.d") != 0) {
         return old_openat(fd, pathname, flag, mode);
     }
 
@@ -83,10 +83,10 @@ static void onCompanionLoaded() {
 }
 
 static void onModuleConnected(int fd) {
-    auto hosts = "/data/adb/hostsredirect/hosts";
+    auto hosts = "/data/adb/null";
     struct stat st{};
     if (stat(hosts, &st) < 0) {
-        LOGD("no hosts file found");
+        LOGD("no null file found");
         close(fd);
         return;
     }
