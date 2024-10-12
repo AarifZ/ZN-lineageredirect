@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22.1)
-project(hostsredirect)
+project(lineageredirect)
 
 set(CXX_FLAGS "${CXX_FLAGS} -fno-exceptions -fno-rtti -fvisibility=hidden -fvisibility-inlines-hidden")
 
